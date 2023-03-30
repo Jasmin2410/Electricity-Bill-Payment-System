@@ -4,20 +4,20 @@ import java.util.List;
 import java.util.Scanner;
 
 import Dto.Consumer;
-import Exceptions.ConsumerException;
+import Exceptions.SomeThingWrongException;
 
 public interface AdminDao {
 	
 	
 	boolean adminLogin(Scanner sc);
 	
-	List<Consumer> viewAllConsumers() throws ConsumerException;
+	List<Consumer> viewAllConsumers() throws SomeThingWrongException;
 
-	List<Consumer> ViewBillOfConsumer() throws ConsumerException;
+	List<Consumer> ViewBillOfConsumer() throws SomeThingWrongException;
 
-	List<Consumer> viewAllBills() throws ConsumerException;
+	List<Consumer> viewAllBills() throws SomeThingWrongException;
 
-	List<Consumer> viewPaidPendingBills() throws ConsumerException;
+	List<Consumer> viewPaidPendingBills() throws SomeThingWrongException;
 
-	void deleteConsumer(String username) throws ConsumerException;
+	void deleteConsumer(String username) throws SomeThingWrongException;
 }

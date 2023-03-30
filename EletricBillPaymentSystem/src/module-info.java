@@ -6,4 +6,5 @@
  *
  */
 module EletricBillPaymentSystem {
+	requires java.sql;
 }
