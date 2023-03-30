@@ -4,17 +4,21 @@ import java.util.List;
 import java.util.Scanner;
 
 import Dto.Consumer;
-import Exceptions.ConsumerException;
+import Exceptions.NoRecordFoundException;
+import Exceptions.SomeThingWrongException;
 
 public interface ConsumerDao {
 			
 	
 	boolean userLogin(Scanner sc);
 	
-	List<Consumer> View_His_Own_Transaction_History() throws ConsumerException;
+	List<Consumer> View_His_Own_Transaction_History() throws SomeThingWrongException;
 	
 	boolean  Pay_Bill(Scanner sc);
-
+	
+	void Login(String username, String password) throws SomeThingWrongException, NoRecordFoundException;
+	
+	void logout();
 	
 }
 

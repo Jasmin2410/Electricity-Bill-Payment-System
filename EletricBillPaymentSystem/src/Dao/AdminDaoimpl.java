@@ -4,42 +4,45 @@ import java.util.List;
 import java.util.Scanner;
 
 import Dto.Consumer;
-import Exceptions.ConsumerException;
+import Exceptions.SomeThingWrongException;
 
 public class AdminDaoimpl implements AdminDao {
 
 	@Override
 	public boolean adminLogin(Scanner sc) {
-		// TODO Auto-generated method stub
+
+		
+		
+		
 		return false;
 	}
 
 	@Override
-	public List<Consumer> viewAllConsumers() throws ConsumerException {
+	public List<Consumer> viewAllConsumers() throws SomeThingWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Consumer> ViewBillOfConsumer() throws ConsumerException {
+	public List<Consumer> ViewBillOfConsumer() throws SomeThingWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Consumer> viewAllBills() throws ConsumerException {
+	public List<Consumer> viewAllBills() throws SomeThingWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Consumer> viewPaidPendingBills() throws ConsumerException {
+	public List<Consumer> viewPaidPendingBills() throws SomeThingWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteConsumer(String username) throws ConsumerException {
+	public void deleteConsumer(String username) throws SomeThingWrongException {
 		// TODO Auto-generated method stub
 		
 	}
