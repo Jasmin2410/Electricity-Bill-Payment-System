@@ -1,23 +1,24 @@
 package Dao;
 
 import java.util.List;
-import java.util.Scanner;
 
+
+import Dto.Bill;
 import Dto.Consumer;
-import Exceptions.SomeThingWrongException;
 
-public interface AdminDao {
+
+public interface AdminDAO {
+
+	public boolean adminLogin(String name,String password) throws WrongCredentials;
+	
+	public List<ConsumerBinClass> displayAllConsumers() throws EmptySet;
+	
+	public List<BillBinClass> displayBillofConsumer(int cid) throws EmptySet;
+	
+	public List<BillBinClass> displayAllBill() throws EmptySet;
+	
+	public void deleteConsumer(int cid) throws NoConsumerFound;
 	
 	
-	boolean adminLogin(Scanner sc);
 	
-	List<Consumer> viewAllConsumers() throws SomeThingWrongException;
-
-	List<Consumer> ViewBillOfConsumer() throws SomeThingWrongException;
-
-	List<Consumer> viewAllBills() throws SomeThingWrongException;
-
-	List<Consumer> viewPaidPendingBills() throws SomeThingWrongException;
-
-	void deleteConsumer(String username) throws SomeThingWrongException;
 }

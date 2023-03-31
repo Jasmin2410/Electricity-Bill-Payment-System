@@ -1,113 +1,100 @@
 package Dto;
 
 public class Consumer {
-	
-	
-	
-	private int id;
-	private String firstName;
-	private String lastName;
-	private String username;
-	private String password;
-	private String address;
-	private String mobile_number;
-	private String email;
-	private String status;
-	
-	public Consumer() {}
+    private int consumerId;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String password;
+    private String address;
+    private String mobileNumber;
+    private String email;
+    private boolean isDeleted;
 
-	public Consumer(int id, String firstName, String lastName, String username, String password, String address,
-			String mobile_number, String email, String status) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.password = password;
-		this.address = address;
-		this.mobile_number = mobile_number;
-		this.email = email;
-		this.status = status;
-	}
+    public Consumer() {
+    }
 
-	public int getId() {
-		return id;
-	}
+    public Consumer(int consumerId, String firstName, String lastName, String username, String password, String address, String mobileNumber, String email, boolean isDeleted) {
+        this.consumerId = consumerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.mobileNumber = mobileNumber;
+        this.email = email;
+        this.isDeleted = isDeleted;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getConsumerId() {
+        return consumerId;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setConsumerId(int consumerId) {
+        this.consumerId = consumerId;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getMobile_number() {
-		return mobile_number;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setMobile_number(String mobile_number) {
-		this.mobile_number = mobile_number;
-	}
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public boolean isDeleted() {
+        return isDeleted;
+    }
 
-	@Override
-	public String toString() {
-		return "Consumer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", address=" + address + ", mobile_number=" + mobile_number + ", email="
-				+ email + ", status=" + status + "]";
-	}
-
-
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }
