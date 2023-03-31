@@ -26,7 +26,7 @@ public class DBUtils {
 		password = bundle.getString("password");
 	}
 	
-	static Connection connectToDatabase() throws SQLException {
+	static Connection getAConnection() throws SQLException {
 		return DriverManager.getConnection(URL, username, password);
 	}
 	
@@ -35,13 +35,12 @@ public class DBUtils {
 			conn.close();
 	}
 	
-	/**
-	 * checks if the resultset is empty or not
-	 * @param rs - The resultset to be checked for empty
-	 * @return - true of resultset is empty, false otherwise
-	 * @throws SQLException - if anything went wrong during this operation
-	 */
+	
 	static boolean isResultSetEmpty(ResultSet rs) throws SQLException {
 		return (!rs.isBeforeFirst() && rs.getRow() == 0)?true:false;
 	}
+	
+	
+
 }
+

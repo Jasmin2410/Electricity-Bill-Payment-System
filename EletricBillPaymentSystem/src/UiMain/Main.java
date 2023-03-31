@@ -1,131 +1,157 @@
-package UiMain;
+package Uimain;
 
+import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
 
-import Dao.LoggedINUser;
+
 
 public class Main {
+	static UserDao userdao = new UserDaoImpl();
+	static AdminDao admindao = new AdminDaoImpl();
+	static String option = "";
 	
-	private static UserUi userUI;
-
-	static void displayAdminMenu() {
-		System.out.println("1. View all consumers.");
-		System.out.println("2. View the bill of the consumer.");
-		System.out.println("3. View all the bills.");
-		System.out.println("4. View all bills paid and pending");
-		System.out.println("5. Delete consumer");
-	
-		System.out.println("0. for Exit");
-	}
-	
-	static void adminMenu(Scanner sc) {
-		int choice = 0;
-		do {
-			displayAdminMenu();
-			System.out.print("Enter selection ");
-			choice = sc.nextInt();
-			switch(choice) {
-				case 0:
-					System.out.println("Bye Bye admin");
-					break;
-				case 1:
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
-					break;
-				case 5:
-					break;
-				
-				default:
-					System.out.println("Invalid Selection, try again");
-			}
-		}while(choice != 0);
-	}
-	
-	static void adminLogin(Scanner sc) {
-		System.out.print("Enter username ");
-		String username = sc.next();
-		System.out.print("Enter password ");
-		String password = sc.next();
+	static void optionsForAll(Scanner sc) {
+		System.out.println("Please choose an option: \n1. LogIn as Consumer \n2. LogIn as Admin \n"+
+		                   "3. Want a new Connnection \n4. Exit");
+		option = sc.next();
 		
-		if(username.equalsIgnoreCase("admin") && password.equalsIgnoreCase("admin")) {
-			adminMenu(sc);
-		}else {
-			System.out.println("Invalid Username and Password");
+		while(!option.equals("1") && !option.equals("2") && !option.equals("3") && !option.equals("4")) {
+			System.out.println("\nPlease choose a valid option");	
+			System.out.println("Please choose an option: \n1. LogIn as Consumer \n2. LogIn as Admin \n"+
+		                       "3. Want a new Connnection \n4. Exit");
+			option = sc.next();
 		}
 	}
-
-
-
-static void displayCustomerMenu() {
-	System.out.println("1. Pay bill");
-	System.out.println("2. View his own transaction History");
-	System.out.println("6. Delete My Account");
-	System.out.println("0. Logout");
-}
-static void customerLogin(Scanner sc) {
-	if(!userUI.login())
-		return;
-
-	//you are here means login is successful
-	int choice = 0;
-	do {
-		displayCustomerMenu();
-		System.out.print("Enter selection ");
-		choice = sc.nextInt();
-		switch(choice) {
-			case 1:
+	
+	static String optionsForAdmin(Scanner sc) {
+		System.out.println("Please choose an option: \n1. Register a new Consumer \n2. View all Consumers \n"+
+		                   "3. View bill of a Consumer \n4. View all the bills \n"+
+						   "5. View all Paid and Pending bills \n6. Delete a Consumer \n7. Logout");
+		String opt = sc.next();
+		
+		while(!opt.equals("1") && !opt.equals("2") && !opt.equals("3") && !opt.equals("4") &&
+			  !opt.equals("5") && !opt.equals("6") && !opt.equals("7") ) {
+			System.out.println("\nPlease choose a valid option");	
+			System.out.println("Please choose an option: \n1. Register a new Consumer \n2. View all Consumers \n"+
+	                   "3. View bill of a Consumer \n4. View all the bills \n"+
+					   "5. View all Paid and Pending bills \n6. Delete a Consumer \n7. Logout");
+			opt = sc.next();
+		}
+		return opt;
+	}
+	
+	static String tryAgain(Scanner sc) {
+		System.out.println("\n1. Try Again? \n2. Last Menu \n3. Exit");
+		String opt = sc.next();
+		
+		while(!opt.equals("1") && !opt.equals("2") && !opt.equals("3")) {
+			System.out.println("\nPlease choose a valid option");	
+			System.out.println("1. Try Again? \n2. Last Menu \n3. Exit");
+			opt = sc.next();
+		}
+		return opt;
+	}
+	
+	static void exitMethod() {
+		System.out.println("Thank you for using our services.");
+		System.out.println("Visit Again!");
+	}
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("     WEL-COME TO RAJASTHAN\nELECTRICITY-BILL-PAYMENT SYSTEM");
+		System.out.println();
+		
+		optionsForAll(sc);	
+		
+		boolean execution = true;
+		
+		while(execution) {
+			switch(option) {
+			case "1" :
+				boolean res = userdao.userLogin(sc);
+				while(!res) {
+					String opt = tryAgain(sc);
+					if(opt.equals("3")) {
+						execution = false;
+						res = true;
+						exitMethod();						
+					}
+					else if(opt.equals("2")) {
+						res = true;
+						optionsForAll(sc);
+					}
+					else res = userdao.userLogin(sc);
+				}				
 				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				try{
-					Thread.sleep(2000);
-				}catch(InterruptedException ex) {
+				
+				
+			case "2" : 
+				boolean res2 = admindao.adminLogin(sc);
+				while(!res2) {
+					String opt = tryAgain(sc);
+					if(opt.equals("3")) {
+						execution = false;
+						res2 = true;
+						exitMethod();						
+					}
+					else if(opt.equals("2")) {
+						res2 = true;
+						optionsForAll(sc);
+					}
+					else res2 = admindao.adminLogin(sc);
+				}
+				String opt = optionsForAdmin(sc);
+				if(opt.equals("1")) {
+					admindao.registerANewCustomer(sc);
+				}
+				else if(opt.equals("2")) {
+					try {
+						List<Consumer> list = admindao.viewAllConsumers();
+						System.out.println(" -> All Consumer Details: ");
+						for(Consumer c : list) System.out.println(c);
+						
+					} catch (ConsumerException e) {
+						System.out.println(e.getMessage());
+					}
+				}
+				else if(opt.equals("6")) {
+					
+					System.out.println("Enter username of the consumer you want to delete");
+					String user = sc.next();
+					try {
+						admindao.deleteConsumer(user);
+					} catch (ConsumerException e) {
+						System.out.println(e.getMessage());
+					}
 					
 				}
-				//no break statement here i.e. after deletion of user account, logout will also take place
-			case 0:
-				userUI.logout();
+				else if(opt.equals("7")) {
+					execution = false;			
+					exitMethod();						
+				}
+				execution = false;
 				break;
-			default:
-				System.out.println("Invalid Selection, try again");
+				
+				
+			case "3" :
+				execution = false;
+				System.out.println("Please contact to the admin nearest to you.\nThank you.");
+				break;
+				
+				
+			case "4" : 
+				execution = false;
+				exitMethod();						
+			}
 		}
-	}while(LoggedINUser.loggedInUserId != 0);
-}
+		
+		
+		
+		sc.close();		
+	}
 
-
-public static void main(String[] args) {
-	Scanner sc = new Scanner(System.in);
-	userUI = new UserUi(sc);
-	
-	int choice = 0;
-	do {
-		System.out.println("1. Admin Login\n2. Customer Login\n0. Exit");
-		choice = sc.nextInt();
-		switch(choice) {
-			case 0:
-				System.out.println("Thank you, Visit again");
-				break;
-			case 1:
-				adminLogin(sc);
-				break;
-			case 2:
-				customerLogin(sc);
-				break;
-			default:
-				System.out.println("Invalid Selection, try again");
-		}
-	}while(choice != 0);
-	sc.close();
-}
 }
