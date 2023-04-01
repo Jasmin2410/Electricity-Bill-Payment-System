@@ -1,14 +1,14 @@
 package Dto;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Payment {
     private int id;
     private int billId;
     private double amountPaid;
-    private LocalDate paymentDate;
+    private Date paymentDate;
 
-    public Payment(int id, int billId, double amountPaid, LocalDate paymentDate) {
+    public Payment(int id, int billId, double amountPaid, Date paymentDate) {
         this.id = id;
         this.billId = billId;
         this.amountPaid = amountPaid;
@@ -27,7 +27,7 @@ public class Payment {
         return amountPaid;
     }
 
-    public LocalDate getPaymentDate() {
+    public Date getPaymentDate() {
         return paymentDate;
     }
 

@@ -2,43 +2,45 @@ package Dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 public class DBUtils {
-	final static String URL;
-	final static String username;
-	final static String password;
 	
-	static {
+	
+	/**
+	 * @param args
+	 */
+
+	public static Connection provideConnection() {
+
+		Connection connection = null;
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-		}catch(ClassNotFoundException ex) {
-			System.err.println("Fatal Error! Unable to start application");
-			System.exit(1);
+
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
 		}
-		
-		ResourceBundle bundle = ResourceBundle.getBundle("dbdetails");
-		
-		URL = bundle.getString("url");
-		username = bundle.getString("username");
-		password = bundle.getString("password");
+
+		String url = "jdbc:mysql://localhost:3306/world";
+
+		try {
+			connection = DriverManager.getConnection(url, "root", "jasmin24");
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+		return connection;
+
 	}
-	
-	static Connection getAConnection() throws SQLException {
-		return DriverManager.getConnection(URL, username, password);
+
+	public static void main(String[] args) {
+
 	}
-	
-	static void closeConnection(Connection conn) throws SQLException{
-		if(conn != null)
-			conn.close();
-	}
-	
-	
-	static boolean isResultSetEmpty(ResultSet rs) throws SQLException {
-		return (!rs.isBeforeFirst() && rs.getRow() == 0)?true:false;
-	}
+
 	
 	
 

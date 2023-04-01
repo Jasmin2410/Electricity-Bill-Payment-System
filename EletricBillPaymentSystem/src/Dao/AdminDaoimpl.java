@@ -1,147 +1,293 @@
 package Dao;
 
-import com.masai.DTO.BillBinClass;
-import com.masai.DTO.ConsumerBinClass;
-import com.masai.Exception.EmptySet;
-import com.masai.Exception.NoConsumerFound;
-import com.masai.Exception.WrongCredentials;
-import com.masai.utils.DBUtils;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AdminDAO implements AdminInterface {
+import Dto.Admin;
+import Dto.Bill;
+import Dto.Consumer;
+import Exceptions.NoRecordFoundException;
+import Exceptions.SomeThingWrongException;
 
-	@Override
-	public boolean adminLogin(String name, String password) throws WrongCredentials {
-		// TODO Auto-generated method stub
-		
-		if(name.equals("admin") && password.equals("admin")) return true;
-		
-		else {
-			throw new WrongCredentials("Wrong Credentials provided by admin");
-		}
-	}
+public class AdminDAOImpl implements AdminDAO{
 
 	@Override
-	public List<ConsumerBinClass> displayAllConsumers() throws EmptySet {
-		// TODO Auto-generated method stub
-		Connection con = null;
-		
-		try {
-			con = DBUtils.linkBetween();
-			
-			String query = "Select * from Consumer";
-			
-			PreparedStatement pst = con.prepareStatement(query);
-			
-			ResultSet rs = pst.executeQuery();
-			
-			if(DBUtils.checkIsEmptyOrNot(rs)) throw new EmptySet("No consumer records founded");
-			else {
-				List<ConsumerBinClass> list = new ArrayList<>();
-				
-				while(rs.next()) {
-					
-					list.add(new ConsumerBinClass(rs.getString("first_name"), rs.getString("last_name"), rs.getString("username"), rs.getString("password"), rs.getString("address"), rs.getString("mobile_number"), rs.getString("email")));
-					
+	
+		public Admin loginAdmin(String admin_Id, String admin_password) throws SomeThingWrongException, NoRecordFoundException {
+
+			Admin admin = null;
+
+			try (Connection connection = DBUtils.provideConnection()) {
+
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM admin WHERE admin_Id = ? AND admin_Password = ?");
+
+				statement.setString(1, admin_Id);
+				statement.setString(2, admin_password);
+
+				ResultSet result = statement.executeQuery();
+
+				if (result.next()) {
+
+					String id = result.getString("admin_id");
+					String password = result.getString("admin_password");
+
+					admin = new Admin(id, password);
+				} else {
+					throw new SomeThingWrongException("Invalid Admin Id & Password");
 				}
-				return list;
-			}
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			throw new EmptySet("No consumer records founded");
-		}
-		finally {
-			try {
-				DBUtils.closeConnection(con);
+
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				throw new SomeThingWrongException(e.getMessage());
+
 			}
+
+			return admin;
+	}
+
+
+	@Override
+	public List<Consumer> DisplayAllConsumers() throws SomeThingWrongException {
+		List<Consumer> listofconsumers = new ArrayList<Consumer>();
+
+		try (Connection connection = DBUtils.provideConnection()) {
+
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM consumer");
+
+			
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				
+				int id = result.getInt("id");
+				String first_name = result.getString("first_name"); 
+				String last_name = result.getString("last_name");
+				String username = result.getString("username");
+				String password = result.getString("password");
+				String address = result.getString("address");
+				String mobile_number = result.getString("mobile_number");
+				String email = result.getString("email");
+				String connection_status=result.getString("connection_status");
+				boolean is_Deleted = result.getBoolean("is_Deleted");
+				
+				 
+				Consumer consumer = new Consumer (id,first_name,last_name,username,password,address,mobile_number,email,connection_status,is_Deleted);
+				
+				
+				listofconsumers.add(consumer);
+			}
+
+		} catch (SQLException e) {
+
+			throw new SomeThingWrongException(e.getMessage());
 		}
+		
+		if (listofconsumers.size() == 0) {
+			throw new SomeThingWrongException("No consumer found");
+		}
+
+		return listofconsumers;
+	}
+
+
+	@Override
+	public List<Bill> displayBillofConsumer(int cid) throws SomeThingWrongException, NoRecordFoundException {
+
+		List<Bill> bills = new ArrayList<Bill>();
+
+		try (Connection connection = DBUtils.provideConnection()) {
+
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM Bill WHERE consumer_id = ?;");
+
+					
+			statement.setInt(1, cid);
+
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				
+				int id=result.getInt("Id");
+				
+				String bill_number = result.getString("bill_number");
+
+				int consumer_Id = result.getInt("consumer_Id");
+
+				Date bill_cycle_start_date = result.getDate("bill_cycle_start_date");
+
+				Date bill_cycle_end_date = result.getDate("bill_cycle_end_date");
+
+				double fixed_charge = result.getDouble("fixed_charge");
+
+				int total_units_consumed = result.getInt("total_units_consumed");
+
+				double taxes = result.getDouble("taxes");
+
+				double adjustment = result.getDouble("adjustment");
+
+				String bill_status =result.getString("bill_status");
+				
+				int is_Deleted = result.getInt("is_Deleted");
+
+				
+				Bill bill = new Bill(id,bill_number, consumer_Id, bill_cycle_start_date, bill_cycle_end_date, fixed_charge, total_units_consumed, taxes, adjustment, bill_status, is_Deleted);
+				
+				
+				bills.add(bill);
+			
+			}
+
+		} catch (SQLException e) {
+			throw new SomeThingWrongException(e.getMessage());
+		}
+
+		if (bills.size() == 0) {
+			throw new NoRecordFoundException("No Ticket Reservations found");
+		}
+
+		return bills;
+	}
+
+	@Override
+	public List<Bill> displayAllBill() throws SomeThingWrongException, NoRecordFoundException{
+		List<Bill> listOfBills = new ArrayList<Bill>();
+
+		try (Connection connection = DBUtils.provideConnection()) {
+
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM bill");
+
+			
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				
+				int id=result.getInt("Id");
+				
+				String bill_number = result.getString("bill_number");
+
+				int consumer_Id = result.getInt("consumer_Id");
+
+				Date bill_cycle_start_date = result.getDate("bill_cycle_start_date");
+
+				Date bill_cycle_end_date = result.getDate("bill_cycle_end_date");
+
+				double fixed_charge = result.getDouble("fixed_charge");
+
+				int total_units_consumed = result.getInt("total_units_consumed");
+
+				double taxes = result.getDouble("taxes");
+
+				double adjustment = result.getDouble("adjustment");
+
+				String bill_status =result.getString("bill_status");
+				
+				int is_Deleted = result.getInt("is_Deleted");
+
+				
+				Bill bill = new Bill(id,bill_number, consumer_Id, bill_cycle_start_date, bill_cycle_end_date, fixed_charge, total_units_consumed, taxes, adjustment, bill_status, is_Deleted);
+				
+				
+				listOfBills.add(bill);
+			}
+
+		} catch (SQLException e) {
+
+			throw new SomeThingWrongException(e.getMessage());
+		}
+		
+		if (listOfBills.size() == 0) {
+			throw new SomeThingWrongException("No Bill found");
+		}
+
+		return listOfBills;
 		
 	}
 
 	@Override
-	public List<BillBinClass> displayBillofConsumer(int cid) throws EmptySet {
-		// TODO Auto-generated method stub
-		Connection con = null;
-		try {
-			con = DBUtils.linkBetween();
+	public List<Bill> displayPaidAndPending() throws SomeThingWrongException {
+		
+		List<Bill> listOfBills = new ArrayList<Bill>();
+
+		try (Connection connection = DBUtils.provideConnection()) {
+
+			PreparedStatement statement = connection.prepareStatement("select * from bill WHERE bill_status IN ('Paid', 'Pending')");
+
 			
-			String query = "Select bill_no,amount,bill_from,bill_to,first_name,last_name from bill b join consumer c on b.consumer_id = c.consumer_id where c.consumer_id ="+cid;
-			
-			PreparedStatement pst = con.prepareStatement(query);
-			
-			ResultSet rs = pst.executeQuery();
-			
-			if(DBUtils.checkIsEmptyOrNot(rs)) throw new EmptySet("No Bills allotted to this Consumer");
-			else {
-				List<BillBinClass> list = new ArrayList<>();
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
 				
-				while(rs.next()) {
-					list.add(new BillBinClass(rs.getInt("bill_no"), rs.getDouble("amount"), rs.getDate("bill_from").toLocalDate() , rs.getDate("bill_to").toLocalDate(), ""+rs.getString("first_name")+" "+rs.getString("last_name")));
-				}
+				int id=result.getInt("Id");
 				
-				return list;
+				String bill_number = result.getString("bill_number");
+
+				int consumer_Id = result.getInt("consumer_Id");
+
+				Date bill_cycle_start_date = result.getDate("bill_cycle_start_date");
+
+				Date bill_cycle_end_date = result.getDate("bill_cycle_end_date");
+
+				double fixed_charge = result.getDouble("fixed_charge");
+
+				int total_units_consumed = result.getInt("total_units_consumed");
+
+				double taxes = result.getDouble("taxes");
+
+				double adjustment = result.getDouble("adjustment");
+
+				String bill_status =result.getString("bill_status");
+				
+				int is_Deleted = result.getInt("is_Deleted");
+
+				
+				Bill bill = new Bill(id,bill_number, consumer_Id, bill_cycle_start_date, bill_cycle_end_date, fixed_charge, total_units_consumed, taxes, adjustment, bill_status, is_Deleted);
+
+				listOfBills.add(bill);
+			
 			}
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			throw new EmptySet("No Bills allotted to this Consumer");
+
+		} catch (SQLException e) {
+
+			throw new SomeThingWrongException(e.getMessage());
 		}
 		
+		if (listOfBills.size() == 0) {
+			throw new SomeThingWrongException("No Bill found");
+		}
+
+		return listOfBills;
 	}
 
 	@Override
-	public List<BillBinClass> displayAllBill() throws EmptySet {
-		// TODO Auto-generated method stub
+	public String deleteConsumer(int cid) throws SomeThingWrongException, NoRecordFoundException {
 		
-		Connection con = null;
-		try {
-			con = DBUtils.linkBetween();
-			
-			String query = "Select bill_no,amount,bill_from,bill_to,first_name,last_name from bill b join consumer c on b.consumer_id = c.consumer_id where c.is_active = 1";
-			
-			PreparedStatement pst = con.prepareStatement(query);
-			
-			ResultSet rs = pst.executeQuery();
-			
-			if(DBUtils.checkIsEmptyOrNot(rs)) throw new EmptySet("No Bills allotted to this Consumer");
-			else {
-				List<BillBinClass> list = new ArrayList<>();
-				
-				while(rs.next()) {
-					list.add(new BillBinClass(rs.getInt("bill_no"), rs.getDouble("amount"), rs.getDate("bill_from").toLocalDate() , rs.getDate("bill_to").toLocalDate(), ""+rs.getString("first_name")+" "+rs.getString("last_name")));
-				}
-				
-				return list;
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			throw new EmptySet("No Bills allotted to this Consumer");
-		}
-	}
+		String result = null;
 
-	@Override
-	public void deleteConsumer(int cid) throws NoConsumerFound {
-		// TODO Auto-generated method stub
-		Connection con = null;
-		
-		try {
-			con = DBUtils.linkBetween();
-			
-			String query = "Update consumer set is_active = 0 where consumer_id = ?";
-			
-			PreparedStatement pst = con.prepareStatement(query);
-			pst.setInt(1, cid);
-			
-			pst.executeUpdate();
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			throw new NoConsumerFound("Consumer not found");
+		try (Connection connection = DBUtils.provideConnection()) {
+
+			PreparedStatement statement = connection.prepareStatement("UPDATE consumer SET connection_status = 'inactive' WHERE id =?");
+
+			statement.setInt(1, cid);
+
+			int response = statement.executeUpdate();
+
+			if (response > 0) {
+				result = "                                                  CONSUMER SET INACTIVE SUCESSFULLY !";
+			}
+
+		} catch (SQLException e) {
+
+			result = e.getMessage();
 		}
-		
-		
-//		PreparedStatement pStatement = con.prepareStatement(query)
-	} 
+
+		return result;
+	}
 	
 }
