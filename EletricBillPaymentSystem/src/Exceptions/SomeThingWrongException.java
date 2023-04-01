@@ -1,5 +1,6 @@
 package Exceptions;
 
+@SuppressWarnings("serial")
 public class SomeThingWrongException extends Exception{
 	
 	public SomeThingWrongException() {}

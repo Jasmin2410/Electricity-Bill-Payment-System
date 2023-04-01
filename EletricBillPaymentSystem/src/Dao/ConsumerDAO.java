@@ -1,14 +1,25 @@
 package Dao;
 
 
-import com.masai.DTO.ConsumerBinClass;
-import com.masai.Exception.InputMisMatch;
-import com.masai.Exception.WrongCredentials;
+
+import java.util.List;
+import Dto.Consumer;
+import Dto.Payment;
+import Dto.Transaction;
+import Exceptions.NoRecordFoundException;
+import Exceptions.SomeThingWrongException;
 
 public interface ConsumerDAO {
 
-	public void signUpConsumer(ConsumerBinClass consumer) throws InputMisMatch;
+	public String signUpConsumer(Consumer consumer) throws SomeThingWrongException ;
 	
-	public boolean loginConsumer(String userName,String password) throws WrongCredentials;
+	public Consumer loginConsumer(String userName,String password) throws SomeThingWrongException, NoRecordFoundException ;
+	
+	public String PayBill(Payment payment, int id)throws SomeThingWrongException, NoRecordFoundException;	
+	
+
+	public List<Transaction> View_his_own_transaction_History (int cid) throws SomeThingWrongException, NoRecordFoundException;
+	
+	
 	
 }

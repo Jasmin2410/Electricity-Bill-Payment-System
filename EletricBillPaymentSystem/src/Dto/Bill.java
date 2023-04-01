@@ -1,122 +1,111 @@
 package Dto;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Bill {
-    private int billId;
-    private int consumerId;
-    private Date billCycleStartDate;
-    private Date billCycleEndDate;
-    private BigDecimal fixedCharge;
-    private int unitsConsumed;
-    private BigDecimal taxes;
-    private BigDecimal adjustment;
-    private BigDecimal totalAmount;
-    private String status;
-    private int isDeleted;
+	private int id;
+	
+    private String bill_number;
+    private int consumer_id;
+    private Date bill_cycle_start_date;
+    private Date bill_cycle_end_date;
+    private double  fixed_charge;
+    private int total_units_consumed;
+    private double taxes;
+    private double adjustment;
+    private String bill_status;
+    private int is_deleted;
+	public Bill(int id, String bill_number, int consumer_id, Date bill_cycle_start_date, Date bill_cycle_end_date,
+			double fixed_charge, int total_units_consumed, double taxes, double adjustment, String bill_status,
+			int is_deleted) {
+		super();
+		this.id = id;
+		this.bill_number = bill_number;
+		this.consumer_id = consumer_id;
+		this.bill_cycle_start_date = bill_cycle_start_date;
+		this.bill_cycle_end_date = bill_cycle_end_date;
+		this.fixed_charge = fixed_charge;
+		this.total_units_consumed = total_units_consumed;
+		this.taxes = taxes;
+		this.adjustment = adjustment;
+		this.bill_status = bill_status;
+		this.is_deleted = is_deleted;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getBill_number() {
+		return bill_number;
+	}
+	public void setBill_number(String bill_number) {
+		this.bill_number = bill_number;
+	}
+	public int getConsumer_id() {
+		return consumer_id;
+	}
+	public void setConsumer_id(int consumer_id) {
+		this.consumer_id = consumer_id;
+	}
+	public Date getBill_cycle_start_date() {
+		return bill_cycle_start_date;
+	}
+	public void setBill_cycle_start_date(Date bill_cycle_start_date) {
+		this.bill_cycle_start_date = bill_cycle_start_date;
+	}
+	public Date getBill_cycle_end_date() {
+		return bill_cycle_end_date;
+	}
+	public void setBill_cycle_end_date(Date bill_cycle_end_date) {
+		this.bill_cycle_end_date = bill_cycle_end_date;
+	}
+	public double getFixed_charge() {
+		return fixed_charge;
+	}
+	public void setFixed_charge(double fixed_charge) {
+		this.fixed_charge = fixed_charge;
+	}
+	public int getTotal_units_consumed() {
+		return total_units_consumed;
+	}
+	public void setTotal_units_consumed(int total_units_consumed) {
+		this.total_units_consumed = total_units_consumed;
+	}
+	public double getTaxes() {
+		return taxes;
+	}
+	public void setTaxes(double taxes) {
+		this.taxes = taxes;
+	}
+	public double getAdjustment() {
+		return adjustment;
+	}
+	public void setAdjustment(double adjustment) {
+		this.adjustment = adjustment;
+	}
+	public String getBill_status() {
+		return bill_status;
+	}
+	public void setBill_status(String bill_status) {
+		this.bill_status = bill_status;
+	}
+	public int getIs_deleted() {
+		return is_deleted;
+	}
+	public void setIs_deleted(int is_deleted) {
+		this.is_deleted = is_deleted;
+	}
+	@Override
+	public String toString() {
+		return "Bill [id=" + id + ", bill_number=" + bill_number + ", consumer_id=" + consumer_id
+				+ ", bill_cycle_start_date=" + bill_cycle_start_date + ", bill_cycle_end_date=" + bill_cycle_end_date
+				+ ", fixed_charge=" + fixed_charge + ", total_units_consumed=" + total_units_consumed + ", taxes="
+				+ taxes + ", adjustment=" + adjustment + ", bill_status=" + bill_status + ", is_deleted=" + is_deleted
+				+ "]";
+	}
 
-    // Constructor
-    public Bill(int billId, int consumerId, Date billCycleStartDate, Date billCycleEndDate, BigDecimal fixedCharge, int unitsConsumed, BigDecimal taxes, BigDecimal adjustment, BigDecimal totalAmount, String status, int isDeleted) {
-        this.billId = billId;
-        this.consumerId = consumerId;
-        this.billCycleStartDate = billCycleStartDate;
-        this.billCycleEndDate = billCycleEndDate;
-        this.fixedCharge = fixedCharge;
-        this.unitsConsumed = unitsConsumed;
-        this.taxes = taxes;
-        this.adjustment = adjustment;
-        this.totalAmount = totalAmount;
-        this.status = status;
-        this.isDeleted = isDeleted;
-    }
-
-    // Getters and Setters
-    public int getBillId() {
-        return billId;
-    }
-
-    public void setBillId(int billId) {
-        this.billId = billId;
-    }
-
-    public int getConsumerId() {
-        return consumerId;
-    }
-
-    public void setConsumerId(int consumerId) {
-        this.consumerId = consumerId;
-    }
-
-    public Date getBillCycleStartDate() {
-        return billCycleStartDate;
-    }
-
-    public void setBillCycleStartDate(Date billCycleStartDate) {
-        this.billCycleStartDate = billCycleStartDate;
-    }
-
-    public Date getBillCycleEndDate() {
-        return billCycleEndDate;
-    }
-
-    public void setBillCycleEndDate(Date billCycleEndDate) {
-        this.billCycleEndDate = billCycleEndDate;
-    }
-
-    public BigDecimal getFixedCharge() {
-        return fixedCharge;
-    }
-
-    public void setFixedCharge(BigDecimal fixedCharge) {
-        this.fixedCharge = fixedCharge;
-    }
-
-    public int getUnitsConsumed() {
-        return unitsConsumed;
-    }
-
-    public void setUnitsConsumed(int unitsConsumed) {
-        this.unitsConsumed = unitsConsumed;
-    }
-
-    public BigDecimal getTaxes() {
-        return taxes;
-    }
-
-    public void setTaxes(BigDecimal taxes) {
-        this.taxes = taxes;
-    }
-
-    public BigDecimal getAdjustment() {
-        return adjustment;
-    }
-
-    public void setAdjustment(BigDecimal adjustment) {
-        this.adjustment = adjustment;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
-    }
+    
+   
 }

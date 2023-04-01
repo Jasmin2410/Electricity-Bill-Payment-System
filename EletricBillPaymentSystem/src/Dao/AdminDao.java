@@ -2,23 +2,27 @@ package Dao;
 
 import java.util.List;
 
-
+import Dto.Admin;
 import Dto.Bill;
 import Dto.Consumer;
+import Exceptions.NoRecordFoundException;
+import Exceptions.SomeThingWrongException;
 
 
 public interface AdminDAO {
 
-	public boolean adminLogin(String name,String password) throws WrongCredentials;
+	public Admin loginAdmin(String admin_Id, String admin_password) throws SomeThingWrongException, NoRecordFoundException;
 	
-	public List<ConsumerBinClass> displayAllConsumers() throws EmptySet;
+	public List<Consumer> DisplayAllConsumers() throws SomeThingWrongException, NoRecordFoundException;
 	
-	public List<BillBinClass> displayBillofConsumer(int cid) throws EmptySet;
+	public List<Bill> displayBillofConsumer(int cid) throws SomeThingWrongException ,NoRecordFoundException;
 	
-	public List<BillBinClass> displayAllBill() throws EmptySet;
+	public List<Bill> displayAllBill() throws SomeThingWrongException, NoRecordFoundException;
 	
-	public void deleteConsumer(int cid) throws NoConsumerFound;
+	public List<Bill> displayPaidAndPending () throws SomeThingWrongException, NoRecordFoundException;
 	
+	public String deleteConsumer(int cid) throws SomeThingWrongException, NoRecordFoundException;
 	
+
 	
 }
