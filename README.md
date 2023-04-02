@@ -128,9 +128,9 @@ If you have a suggestion that would make this application better, Please fork th
 Don't forget to give the project a star ! Thank You !
 
 ## 🔗 Contact Me
-[![portfolio](https://github.com/Jasmin2410/Jasmin2410.github.io)
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/Jasmin2410/Jasmin2410.github.io)
 
-[![linkedin](https://www.linkedin.com/in/shaik-jasmin-586518204/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shaik-jasmin-586518204/)
 
 ## Authors
 
