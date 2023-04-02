@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Dto.Consumer;
-import Dto.Payment;
 import Dto.Transaction;
 import Exceptions.NoRecordFoundException;
 import Exceptions.SomeThingWrongException;
@@ -55,7 +54,7 @@ public class ConsumerDAOImpl implements ConsumerDAO {
 		try (Connection connection = DBUtils.provideConnection()) {
 
 			PreparedStatement statement = connection
-					.prepareStatement("SELECT * FROM Consumer WHERE username = ? AND password = ?");
+					.prepareStatement("SELECT * FROM Consumer WHERE id = ? AND password = ?");
 
 			statement.setString(1, userName);
 			statement.setString(2, Password);
@@ -63,18 +62,18 @@ public class ConsumerDAOImpl implements ConsumerDAO {
 			ResultSet result = statement.executeQuery();
 
 			if (result.next()) {
-				int consumerid = result.getInt("ConsumerId");
-				String firstName = result.getString("firstName");
-				String lastName = result.getString("lastName");
+				int id = result.getInt("id");
+				String first_name = result.getString("first_name");
+				String last_name = result.getString("last_name");
 				String username = result.getString("username");
 				String password = result.getString("password");
 				String address = result.getString("address");
-				String mobileNumber = result.getString("mobileNumber");
+				String mobile_number = result.getString("mobile_number");
 				String email = result.getString("email");
 				String connection_status=result.getString("connection_status");
-				boolean isDeleted = result.getBoolean("isDeleted");
+				boolean is_Deleted = result.getBoolean("is_Deleted");
 
-				consumer = new Consumer(consumerid, firstName, lastName, username, password,address,mobileNumber,email,connection_status,isDeleted);
+				consumer = new Consumer(id, first_name, last_name, username, password,address,mobile_number,email,connection_status,is_Deleted);
 			} else {
 				throw new NoRecordFoundException("Invalid User Id & Password");
 			}
@@ -89,38 +88,21 @@ public class ConsumerDAOImpl implements ConsumerDAO {
 	}
 
 	@Override
-	public String PayBill(Payment payment, int id) throws SomeThingWrongException, NoRecordFoundException {
+	public String PayBill( int id) throws SomeThingWrongException, NoRecordFoundException {
 		
 		String result = null;
 
 		try (Connection connection = DBUtils.provideConnection()) {
 
-			PreparedStatement statement_1 = connection
-					.prepareStatement("UPDATE Bill SET bill_status = 'paid' WHERE id = ?");
+			PreparedStatement statement = connection.prepareStatement("UPDATE Bill SET bill_status = 'paid' WHERE id = ?");
 
-			statement_1.setInt(1, payment.getId());
+			statement.setInt(1, id);
 
-			ResultSet response_1 = statement_1.executeQuery();
+			int response = statement.executeUpdate();
 
-			if(response_1.next()) {
-				
-				
-					PreparedStatement statement = connection.prepareStatement(
-							"INSERT INTO Payment (bill_id, amount_paid, payment_date)VALUES (?,?,?)");
-
-					statement.setInt(1, payment.getBillId());
-					statement.setDouble(2, payment.getAmountPaid());
-					statement.setDate(3, payment.getPaymentDate());
-					
-
-					int response = statement.executeUpdate();
-
-					if (response > 0) {
-						result = "Paid Bill Sucessfully! ";
-					}
-									
+			if (response > 0) {
+				result = "                                                    SUCESSFULLY BILL PAID !";
 			}
-
 
 		} catch (SQLException e) {
 
@@ -129,6 +111,7 @@ public class ConsumerDAOImpl implements ConsumerDAO {
 
 		return result;
 	}
+	
 
 	@Override
 	public List<Transaction> View_his_own_transaction_History(int cid) throws SomeThingWrongException, NoRecordFoundException {
@@ -137,7 +120,8 @@ public class ConsumerDAOImpl implements ConsumerDAO {
 
 		try (Connection connection = DBUtils.provideConnection()) {
 
-			PreparedStatement statement = connection.prepareStatement("SELECT b.bill_number,b.consumer_id b.bill_cycle_start_date, b.bill_cycle_end_date, b.total_units_consumed, b.bill_status, p.payment_date, p.amount_paid FROM Bill b LEFT JOIN Payment p ON b.id = p.bill_id WHERE b.consumer_id = ?");
+			PreparedStatement statement = connection.prepareStatement("SELECT b.bill_number,b.consumer_id, b.bill_cycle_start_date, b.bill_cycle_end_date, b.total_units_consumed, b.bill_status, p.payment_date, p.amount_paid \r\n"
+					+ "FROM Bill b LEFT JOIN Payment p ON b.id = p.bill_id WHERE b.consumer_id = ?");
 
 					
 			statement.setInt(1, cid);
