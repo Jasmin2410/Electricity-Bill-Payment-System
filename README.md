@@ -1,5 +1,5 @@
 
-![logo](https://energyzedworld.com/wp-content/uploads/2018/03/electricity-bill.png)
+![logo](https://i1.wp.com/technofizi.net/wp-content/uploads/2017/08/Bill-1.jpg?fit=1317%2C752&ssl=1)
 
 # Electricity Bill Payment System
  **C.L.I BASED APPLICATION**
