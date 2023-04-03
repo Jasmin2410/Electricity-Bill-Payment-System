@@ -1,5 +1,5 @@
 
-![logo](https://media.istockphoto.com/id/1205600375/vector/save-energy-and-pay-utility-bills-concept-vector-illustration-man-and-woman-worried-and.jpg?s=612x612&w=0&k=20&c=R5_3JK1PYYy1j9SIcKtw7M1FHNImHM2PB986aWqqdYs=)
+![logo](https://energyzedworld.com/wp-content/uploads/2018/03/electricity-bill.png)
 
 # Electricity Bill Payment System
  **C.L.I BASED APPLICATION**
