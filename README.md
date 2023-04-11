@@ -11,7 +11,7 @@ previous month's bill).
 The application will be used by the **two** categories of users:
 
 - **Admin (Administrator)**
-- **User (Passenger)** 
+- **User (Consumer)** 
 
 ## Tech Stack
 
